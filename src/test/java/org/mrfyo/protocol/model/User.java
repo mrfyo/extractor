@@ -1,11 +1,11 @@
 package org.mrfyo.protocol.model;
 
 import lombok.Data;
-import org.mrfyo.protocol.extractor.annotation.OrderField;
-import org.mrfyo.protocol.extractor.annotation.Message;
-import org.mrfyo.protocol.extractor.annotation.Support;
-import org.mrfyo.protocol.extractor.enums.DataType;
-import org.mrfyo.protocol.extractor.type.EnumOriginTypeHandler;
+import org.mrfyo.extractor.annotation.OrderField;
+import org.mrfyo.extractor.annotation.Message;
+import org.mrfyo.extractor.annotation.Support;
+import org.mrfyo.extractor.enums.DataType;
+import org.mrfyo.extractor.type.EnumOriginTypeHandler;
 
 /**
  * @author Feng Yong

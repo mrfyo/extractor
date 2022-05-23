@@ -1,12 +1,12 @@
 package org.mrfyo.protocol.model;
 
 import lombok.Data;
-import org.mrfyo.protocol.extractor.annotation.ExtraField;
-import org.mrfyo.protocol.extractor.annotation.Message;
-import org.mrfyo.protocol.extractor.annotation.Support;
-import org.mrfyo.protocol.extractor.enums.DataType;
-import org.mrfyo.protocol.extractor.MessageType;
-import org.mrfyo.protocol.extractor.support.EmptyFieldSupport;
+import org.mrfyo.extractor.annotation.ExtraField;
+import org.mrfyo.extractor.annotation.Message;
+import org.mrfyo.extractor.annotation.Support;
+import org.mrfyo.extractor.enums.DataType;
+import org.mrfyo.extractor.MessageType;
+import org.mrfyo.extractor.support.EmptyFieldSupport;
 
 /**
  * @author Feng Yong

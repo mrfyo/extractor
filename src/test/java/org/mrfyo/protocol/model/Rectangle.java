@@ -1,11 +1,10 @@
 package org.mrfyo.protocol.model;
 
 import lombok.Data;
-import org.mrfyo.protocol.extractor.annotation.OrderField;
-import org.mrfyo.protocol.extractor.annotation.Message;
+import org.mrfyo.extractor.annotation.OrderField;
+import org.mrfyo.extractor.annotation.Message;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Feng Yong
