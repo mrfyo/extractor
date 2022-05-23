@@ -82,7 +82,7 @@ public class TypeHandlerAggregator implements TypeHandler<Object> {
         Class<?> fieldType = descriptor.getFieldType();
         TypeHandler<?> extractor = registry.getExtractor(fieldType);
         if (extractor == null) {
-            throw new ExtractException("not find extractor to extract " + descriptor.getName());
+            return registry.getExtractor(Object.class);
         }
         return extractor;
     }

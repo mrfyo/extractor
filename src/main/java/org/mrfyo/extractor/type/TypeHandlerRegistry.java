@@ -13,6 +13,9 @@ public final class TypeHandlerRegistry {
 
 
     public TypeHandlerRegistry() {
+        extractorMap.put(Boolean.class, new BooleanTypeHandler());
+        extractorMap.put(boolean.class, new BooleanTypeHandler());
+
         extractorMap.put(Byte.class, new ByteTypeHandler());
         extractorMap.put(byte.class, new ByteTypeHandler());
 
@@ -34,6 +37,7 @@ public final class TypeHandlerRegistry {
         extractorMap.put(String.class, new StringTypeHandler());
         extractorMap.put(List.class, new ListTypeHandler());
 
+        extractorMap.put(Object.class, new ObjectTypeHandler());
     }
 
 
@@ -47,6 +51,6 @@ public final class TypeHandlerRegistry {
     }
 
     public void register(Class<?> type, TypeHandler<?> extractor) {
-        extractorMap.put(type, extractor);
+        extractorMap.putIfAbsent(type, extractor);
     }
 }

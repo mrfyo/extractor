@@ -10,9 +10,10 @@ import org.mrfyo.extractor.io.Writer;
 /**
  * @author Feng Yong
  */
-public class IntegerTypeHandler implements TypeHandler<Integer> {
+public class BooleanTypeHandler implements TypeHandler<Boolean> {
     @Override
-    public void marshal(Writer writer, FieldDescriptor descriptor, Integer value) throws ExtractException {
+    public void marshal(Writer writer, FieldDescriptor descriptor, Boolean v) throws ExtractException {
+        int value = v ? 1 : 0;
         DataType dataType = descriptor.getDataType();
         if (dataType.equals(DataType.BYTE)) {
             writer.writeUint8(value);
@@ -21,20 +22,19 @@ public class IntegerTypeHandler implements TypeHandler<Integer> {
         } else if (dataType.equals(DataType.DWORD)) {
             writer.writeUint32(value);
         } else {
-            throw new ExtractException("cannot marshal " + dataType);
+            throw new ExtractException("cannot marshal " + dataType + " to byte");
         }
-
     }
 
     @Override
-    public Integer unmarshal(Reader reader, FieldDescriptor descriptor) throws ExtractException {
+    public Boolean unmarshal(Reader reader, FieldDescriptor descriptor) throws ExtractException {
         DataType dataType = descriptor.getDataType();
         if (dataType.equals(DataType.BYTE)) {
-            return reader.readUint8();
+            return Convert.convert(Boolean.class, reader.readUint8());
         } else if (dataType.equals(DataType.WORD)) {
-            return reader.readUint16();
+            return Convert.convert(Boolean.class, reader.readUint16());
         } else if (dataType.equals(DataType.DWORD)) {
-            return Convert.convert(Integer.class, reader.readUint32());
+            return Convert.convert(Boolean.class, reader.readUint32());
         } else {
             throw new ExtractException("cannot unmarshal " + dataType);
         }
