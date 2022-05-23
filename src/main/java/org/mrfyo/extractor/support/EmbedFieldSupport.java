@@ -10,8 +10,7 @@ import org.mrfyo.extractor.type.TypeHandler;
 /**
  * @author Feng Yong
  */
-public class OrderedFieldSupport implements TypeHandler<Object> {
-
+public class EmbedFieldSupport implements TypeHandler<Object> {
     @Override
     public Object unmarshal(Reader reader, FieldDescriptor descriptor) throws ExtractException {
         return Extractors.unmarshal(reader, descriptor.getFieldType());
@@ -21,5 +20,4 @@ public class OrderedFieldSupport implements TypeHandler<Object> {
     public void marshal(Writer writer, FieldDescriptor descriptor, Object value) throws ExtractException {
         Extractors.marshal(writer, value);
     }
-
 }

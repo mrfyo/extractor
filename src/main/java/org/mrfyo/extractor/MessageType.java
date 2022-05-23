@@ -15,5 +15,7 @@ public interface MessageType {
      */
     int EXTRA = 1;
 
+    int BIT = 2;
+
 
 }
