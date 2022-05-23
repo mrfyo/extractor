@@ -2,10 +2,10 @@ package org.mrfyo.protocol.model;
 
 import lombok.Data;
 import org.mrfyo.protocol.extractor.annotation.OrderField;
-import org.mrfyo.protocol.extractor.annotation.ListField;
 import org.mrfyo.protocol.extractor.annotation.Message;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Feng Yong
@@ -14,7 +14,6 @@ import java.util.List;
 @Message
 public class Rectangle {
 
-    @OrderField(size = 48)
-    @ListField(itemType = Position.class)
+    @OrderField
     private List<Position> positions;
 }

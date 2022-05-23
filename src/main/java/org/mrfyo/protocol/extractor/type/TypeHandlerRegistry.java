@@ -7,12 +7,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Feng Yong
  */
-public final class FieldExtractorRegistry {
+public final class TypeHandlerRegistry {
 
     private final Map<Class<?>, TypeHandler<?>> extractorMap = new ConcurrentHashMap<>();
 
 
-    public FieldExtractorRegistry() {
+    public TypeHandlerRegistry() {
         extractorMap.put(Byte.class, new ByteTypeHandler());
         extractorMap.put(byte.class, new ByteTypeHandler());
 
@@ -32,7 +32,6 @@ public final class FieldExtractorRegistry {
         extractorMap.put(byte[].class, new ByteArrayTypeHandler());
 
         extractorMap.put(String.class, new StringTypeHandler());
-
         extractorMap.put(List.class, new ListTypeHandler());
 
     }

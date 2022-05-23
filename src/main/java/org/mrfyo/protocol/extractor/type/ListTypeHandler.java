@@ -2,11 +2,13 @@ package org.mrfyo.protocol.extractor.type;
 
 import org.mrfyo.protocol.extractor.ExtractException;
 import org.mrfyo.protocol.extractor.Extractors;
-import org.mrfyo.protocol.extractor.annotation.ListField;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.io.Reader;
 import org.mrfyo.protocol.extractor.io.Writer;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,17 @@ public class ListTypeHandler implements TypeHandler<List<Object>> {
 
     @Override
     public List<Object> unmarshal(Reader reader, FieldDescriptor descriptor) throws ExtractException {
-        ListField listField = descriptor.getAnnotation(ListField.class);
-        Class<?> itemType = listField.itemType();
-
-
+        Class<?> itemType = getParameterizedType(descriptor.getField());
         List<Object> list = new ArrayList<>();
         while (reader.readableBytes() > 0) {
             list.add(Extractors.unmarshal(reader, itemType));
         }
         return list;
+    }
+
+    private Class<?> getParameterizedType(Field field) {
+        ParameterizedType pt = (ParameterizedType) field.getGenericType();
+        Type[] arguments = pt.getActualTypeArguments();
+        return (Class<?>) arguments[0];
     }
 }

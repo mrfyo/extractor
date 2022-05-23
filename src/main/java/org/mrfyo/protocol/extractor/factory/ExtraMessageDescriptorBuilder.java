@@ -6,7 +6,6 @@ import org.mrfyo.protocol.extractor.bean.ExtraFieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
 import org.mrfyo.protocol.extractor.enums.InternalMessageType;
-import org.mrfyo.protocol.extractor.util.FieldUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -26,7 +25,7 @@ public class ExtraMessageDescriptorBuilder extends MessageDescriptorBuilder {
 
     @Override
     public <T> MessageDescriptor<T> build(Class<T> messageType) throws DescriptorBuilderException {
-        List<Field> fields = FieldUtils.getDeclaredFields(messageType, true,
+        List<Field> fields = getDeclaredFields(messageType, true,
                 field -> field.isAnnotationPresent(ExtraField.class));
         List<ExtraFieldDescriptor> fieldDescriptors = new ArrayList<>(fields.size());
 

@@ -5,6 +5,10 @@ import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 
 /**
@@ -38,5 +42,27 @@ public abstract class MessageDescriptorBuilder {
         } catch (IntrospectionException e) {
             throw new DescriptorBuilderException(fieldName, "field cannot visit");
         }
+    }
+
+    public List<Field> getDeclaredFields(Class<?> clazz, boolean includeSupper, Predicate<Field> matcher) {
+        List<Field> fields = new ArrayList<>();
+        if(includeSupper) {
+            Class<?> superclass = clazz.getSuperclass();
+            if(superclass != null) {
+                Field[] fs = superclass.getDeclaredFields();
+                for (Field f : fs) {
+                    if(matcher.test(f)){
+                        fields.add(f);
+                    }
+                }
+            }
+        }
+        Field[] fs = clazz.getDeclaredFields();
+        for (Field f : fs) {
+            if(matcher.test(f)){
+                fields.add(f);
+            }
+        }
+        return fields;
     }
 }

@@ -22,9 +22,9 @@ public class TypeHandlerAggregator implements TypeHandler<Object> {
 
     private final Logger log = LoggerFactory.getLogger(TypeHandlerAggregator.class);
 
-    private final FieldExtractorRegistry registry;
+    private final TypeHandlerRegistry registry;
 
-    public TypeHandlerAggregator(FieldExtractorRegistry registry) {
+    public TypeHandlerAggregator(TypeHandlerRegistry registry) {
         this.registry = registry;
     }
 

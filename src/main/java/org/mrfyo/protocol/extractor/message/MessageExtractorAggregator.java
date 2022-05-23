@@ -5,7 +5,7 @@ import org.mrfyo.protocol.extractor.factory.CacheMessageDescriptorFactory;
 import org.mrfyo.protocol.extractor.factory.MessageDescriptorFactory;
 
 import org.mrfyo.protocol.extractor.type.TypeHandlerAggregator;
-import org.mrfyo.protocol.extractor.type.FieldExtractorRegistry;
+import org.mrfyo.protocol.extractor.type.TypeHandlerRegistry;
 import org.mrfyo.protocol.extractor.io.Reader;
 import org.mrfyo.protocol.extractor.io.Writer;
 
@@ -25,15 +25,15 @@ public class MessageExtractorAggregator implements MessageExtractor {
 
     private final MessageDescriptorFactory descriptorFactory;
 
-    private final FieldExtractorRegistry registry;
+    private final TypeHandlerRegistry registry;
 
     private final TypeHandlerAggregator typeHandlerAggregator;
 
     public MessageExtractorAggregator() {
-        this(new FieldExtractorRegistry());
+        this(new TypeHandlerRegistry());
     }
 
-    public MessageExtractorAggregator(FieldExtractorRegistry registry) {
+    public MessageExtractorAggregator(TypeHandlerRegistry registry) {
         this.descriptorFactory = new CacheMessageDescriptorFactory();
         this.registry = registry;
         this.typeHandlerAggregator = new TypeHandlerAggregator(registry);
@@ -93,7 +93,7 @@ public class MessageExtractorAggregator implements MessageExtractor {
         this.extractors.addAll(extractors);
     }
 
-    public FieldExtractorRegistry getRegistry() {
+    public TypeHandlerRegistry getRegistry() {
         return registry;
     }
 
