@@ -1,16 +1,11 @@
 package org.mrfyo.protocol.extractor.bean;
 
 import cn.hutool.core.convert.Convert;
-import org.mrfyo.protocol.extractor.annotation.ListField;
-import org.mrfyo.protocol.extractor.annotation.ScaleConverter;
-import org.mrfyo.protocol.extractor.annotation.Support;
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
 
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +25,8 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
      */
     private final Class<?> fieldType;
 
+    private final Field field;
+
     /**
      * write method
      */
@@ -45,61 +42,19 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
      */
     private final List<Annotation> annotations;
 
-    /**
-     * java data type
-     */
-    private final JavaDataType javaType;
 
     public AbstractFieldDescriptor(Field field, PropertyDescriptor pd) {
         this.name = field.getName();
+        this.field = field;
         this.writeMethod = pd.getWriteMethod();
         this.readMethod = pd.getReadMethod();
         this.annotations = initAnnotations(field);
         this.fieldType = initFieldType(field.getType());
-        this.javaType = initJavaDataType();
-    }
-
-    /**
-     * 确定Java数据类型，具有一定的约束性
-     */
-    private JavaDataType initJavaDataType() {
-        if (hasAnnotation(Support.class) || hasAnnotation(ListField.class)) {
-            return JavaDataType.ANY;
-        }
-        if (hasAnnotation(ScaleConverter.class)) {
-            return JavaDataType.DOUBLE;
-        }
-
-        if (fieldType == Integer.class || fieldType == Long.class) {
-            return JavaDataType.INT;
-        } else if (fieldType == String.class) {
-            return JavaDataType.STRING;
-        } else if (fieldType == LocalDateTime.class) {
-            return JavaDataType.DATE;
-        } else {
-            return JavaDataType.ANY;
-        }
-
     }
 
 
     private List<Annotation> initAnnotations(Field field) {
-        List<Annotation> list = new ArrayList<>(Arrays.asList(field.getAnnotations()));
-        if (field.getAnnotation(ListField.class) != null) {
-//            list.add(new Support() {
-//
-//                @Override
-//                public Class<? extends Annotation> annotationType() {
-//                    return Support.class;
-//                }
-//
-//                @Override
-//                public Class<? extends FieldExtractor<?>> value() {
-//                    return ListFieldSupport.class;
-//                }
-//            });
-        }
-        return list;
+        return new ArrayList<>(Arrays.asList(field.getAnnotations()));
     }
 
     /**
@@ -107,6 +62,11 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
      */
     protected Class<?> initFieldType(Class<?> fieldType) {
         return Convert.wrap(fieldType);
+    }
+
+    @Override
+    public Field getField() {
+        return field;
     }
 
     @Override
@@ -127,11 +87,6 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public JavaDataType getJavaType() {
-        return javaType;
     }
 
     @Override

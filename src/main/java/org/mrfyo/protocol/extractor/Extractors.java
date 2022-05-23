@@ -4,31 +4,32 @@ import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
 import org.mrfyo.protocol.extractor.io.ByteBufHelper;
 import org.mrfyo.protocol.extractor.io.Reader;
 import org.mrfyo.protocol.extractor.io.Writer;
-import org.mrfyo.protocol.extractor.message.MessageExtractor;
 import org.mrfyo.protocol.extractor.message.MessageExtractorAggregator;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author Feng Yong
  */
 public class Extractors {
 
-    private static MessageExtractor extractor = new MessageExtractorAggregator();
+    private volatile static MessageExtractorAggregator extractor;
 
-    private static Charset charset = StandardCharsets.UTF_8;
+    private Extractors() {
+    }
 
-    public static void setExtractor(MessageExtractor extractor) {
+    public static MessageExtractorAggregator getExtractor() {
+        if (extractor == null) {
+            synchronized (Extractors.class) {
+                if (extractor == null) {
+                    extractor = new MessageExtractorAggregator();
+                }
+            }
+        }
+        return extractor;
+    }
+
+    public static void setExtractor(MessageExtractorAggregator extractor) {
         Extractors.extractor = extractor;
-    }
-
-    public static void setCharset(Charset charset) {
-        Extractors.charset = charset;
-    }
-
-    public static Charset getCharset() {
-        return charset;
     }
 
     /**
@@ -39,7 +40,7 @@ public class Extractors {
      */
 
     public static <T> void marshal(Writer writer, T bean) {
-        extractor.marshal(writer, bean);
+        getExtractor().marshal(writer, bean);
     }
 
     /**
@@ -50,7 +51,7 @@ public class Extractors {
      * @param bean       消息实体类对象
      */
     public static void marshal(Writer writer, MessageDescriptor<?> descriptor, Object bean) {
-        extractor.marshal(writer, descriptor, bean);
+        getExtractor().marshal(writer, descriptor, bean);
     }
 
     /**
@@ -62,7 +63,7 @@ public class Extractors {
      */
     public static <T> Writer marshal(T message, int cap) {
         Writer writer = ByteBufHelper.buffer(cap);
-        extractor.marshal(writer, message);
+        getExtractor().marshal(writer, message);
         return writer;
     }
 
@@ -74,7 +75,7 @@ public class Extractors {
      * @return message Object.
      */
     public static <T> T unmarshal(Reader reader, Class<T> clazz) {
-        return extractor.unmarshal(reader, clazz);
+        return getExtractor().unmarshal(reader, clazz);
     }
 
     /**
@@ -85,7 +86,7 @@ public class Extractors {
      * @return message Object.
      */
     public static Object unmarshal(Reader reader, MessageDescriptor<?> descriptor) {
-        return extractor.unmarshal(reader, descriptor);
+        return getExtractor().unmarshal(reader, descriptor);
     }
 
     /**
@@ -97,10 +98,9 @@ public class Extractors {
      * @return 消息实体类
      */
     public static <T> T unmarshal(byte[] bytes, Class<T> type) {
-        return extractor.unmarshal(ByteBufHelper.copiedBuffer(bytes), type);
+        return getExtractor().unmarshal(ByteBufHelper.copiedBuffer(bytes), type);
     }
 
-    private Extractors() {
-    }
+
 
 }

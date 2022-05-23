@@ -1,10 +1,10 @@
 package org.mrfyo.protocol.extractor.bean;
 
 
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.enums.DataType;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -20,6 +20,13 @@ public interface FieldDescriptor {
      * @return field name
      */
     String getName();
+
+    /**
+     * return field
+     *
+     * @return field
+     */
+    Field getField();
 
     /**
      * return field write method
@@ -69,14 +76,7 @@ public interface FieldDescriptor {
     /**
      * return raw type of this field in binary message
      *
-     * @return {@link  RawDataType}
+     * @return {@link  DataType}
      */
-    RawDataType getRawType();
-
-    /**
-     * return java type of this field
-     *
-     * @return {@link JavaDataType}
-     */
-    JavaDataType getJavaType();
+    DataType getDataType();
 }

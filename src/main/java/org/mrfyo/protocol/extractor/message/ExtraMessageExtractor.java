@@ -4,9 +4,9 @@ import cn.hutool.core.util.ReflectUtil;
 import org.mrfyo.protocol.extractor.bean.ExtraFieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
-import org.mrfyo.protocol.extractor.enums.MessageType;
+import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 import org.mrfyo.protocol.extractor.factory.MessageDescriptorFactory;
-import org.mrfyo.protocol.extractor.field.FieldExtractor;
+import org.mrfyo.protocol.extractor.type.TypeHandlerAggregator;
 import org.mrfyo.protocol.extractor.io.Reader;
 import org.mrfyo.protocol.extractor.io.Writer;
 import org.slf4j.Logger;
@@ -27,19 +27,19 @@ public class ExtraMessageExtractor implements MessageExtractor {
 
     private final Logger log = LoggerFactory.getLogger(ExtraMessageExtractor.class);
 
-    private final FieldExtractor<?> fieldExtractor;
+    private final TypeHandlerAggregator fieldExtractor;
 
     private final MessageDescriptorFactory descriptorFactory;
 
 
-    public ExtraMessageExtractor(FieldExtractor<?> extractor, MessageDescriptorFactory descriptorFactory) {
+    public ExtraMessageExtractor(TypeHandlerAggregator extractor, MessageDescriptorFactory descriptorFactory) {
         this.fieldExtractor = extractor;
         this.descriptorFactory = descriptorFactory;
     }
 
     @Override
     public boolean supported(MessageDescriptor<?> descriptor) {
-        return descriptor.getMessageType().equals(MessageType.EXTRA);
+        return descriptor.getMessageType().equals(InternalMessageType.EXTRA);
     }
 
     @Override

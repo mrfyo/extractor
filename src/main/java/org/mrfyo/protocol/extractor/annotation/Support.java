@@ -1,7 +1,7 @@
 package org.mrfyo.protocol.extractor.annotation;
 
 
-import org.mrfyo.protocol.extractor.field.FieldExtractor;
+import org.mrfyo.protocol.extractor.type.TypeHandler;
 
 import java.lang.annotation.*;
 
@@ -12,5 +12,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Support {
-    Class<? extends FieldExtractor<?>> value();
+    Class<? extends TypeHandler> value();
 }

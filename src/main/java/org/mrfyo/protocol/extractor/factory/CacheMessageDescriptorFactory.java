@@ -20,7 +20,7 @@ public class CacheMessageDescriptorFactory implements MessageDescriptorFactory {
 
 
     public CacheMessageDescriptorFactory() {
-        addBuilder(new FixedMessageDescriptorBuilder());
+        addBuilder(new OrderedMessageDescriptorBuilder());
         addBuilder(new ExtraMessageDescriptorBuilder());
     }
 
@@ -33,6 +33,7 @@ public class CacheMessageDescriptorFactory implements MessageDescriptorFactory {
         builders.add(builder);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> MessageDescriptor<T> getMessageDescriptor(Class<T> messageType) {
         if (cache.containsKey(messageType)) {

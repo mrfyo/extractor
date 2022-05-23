@@ -1,12 +1,11 @@
 package org.mrfyo.protocol.model;
 
 import lombok.Data;
-import org.mrfyo.protocol.extractor.annotation.FixedField;
+import org.mrfyo.protocol.extractor.annotation.OrderField;
 import org.mrfyo.protocol.extractor.annotation.Message;
 import org.mrfyo.protocol.extractor.annotation.Support;
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
-import org.mrfyo.protocol.extractor.support.StringFieldSupport;
+import org.mrfyo.protocol.extractor.enums.DataType;
+import org.mrfyo.protocol.extractor.type.EnumOriginTypeHandler;
 
 /**
  * @author Feng Yong
@@ -15,13 +14,19 @@ import org.mrfyo.protocol.extractor.support.StringFieldSupport;
 @Message
 public class User {
 
-    @FixedField(type = RawDataType.WORD, javaType = JavaDataType.INT)
+    @OrderField(type = DataType.WORD)
     private int id;
 
-    @FixedField(size = 6)
+    @OrderField(size = 6)
     private String mobile;
 
-    @FixedField
-    @Support(StringFieldSupport.class)
-    private String name;
+    @OrderField(type = DataType.BYTE)
+    @Support(EnumOriginTypeHandler.class)
+    private Sex sex;
+
+
+    public enum Sex {
+        MAN, WOMAN
+    }
+
 }

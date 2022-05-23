@@ -1,9 +1,8 @@
 package org.mrfyo.protocol.extractor.bean;
 
 
-import org.mrfyo.protocol.extractor.ExtractException;
-import org.mrfyo.protocol.extractor.annotation.FixedField;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.annotation.OrderField;
+import org.mrfyo.protocol.extractor.enums.DataType;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -19,20 +18,20 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
 
     private final int size;
 
-    private final RawDataType rawType;
+    private final DataType rawType;
 
     public BasicFieldDescriptor(Field field, PropertyDescriptor pd){
         super(field, pd);
-        FixedField fixedField = getAnnotation(FixedField.class, "BasicField Required");
-        this.order = fixedField.order();
-        this.rawType = fixedField.type();
-        this.size = initSize(fixedField);
+        OrderField orderField = getAnnotation(OrderField.class, "BasicField Required");
+        this.order = orderField.order();
+        this.rawType = orderField.type();
+        this.size = initSize(orderField);
     }
 
-    public int initSize(FixedField fixedField) {
-        int length = fixedField.type().getSize();
+    public int initSize(OrderField orderField) {
+        int length = orderField.type().getSize();
         if(length == 0) {
-            return fixedField.size();
+            return orderField.size();
         }
         return length;
     }
@@ -47,7 +46,7 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
     }
 
     @Override
-    public RawDataType getRawType() {
+    public DataType getDataType() {
         return rawType;
     }
 
@@ -57,8 +56,7 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
         StringJoiner joiner = new StringJoiner(",", "(", ")");
         joiner.add("order=" + getOrder());
         joiner.add("name=" + getName());
-        joiner.add("type=" + getRawType());
-        joiner.add("javaType=" + getJavaType());
+        joiner.add("type=" + getDataType());
         joiner.add("size=" + getSize());
         return "BasicFieldDescriptor" + joiner;
     }

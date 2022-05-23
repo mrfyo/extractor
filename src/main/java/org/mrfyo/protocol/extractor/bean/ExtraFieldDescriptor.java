@@ -1,7 +1,7 @@
 package org.mrfyo.protocol.extractor.bean;
 
 import org.mrfyo.protocol.extractor.annotation.ExtraField;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.enums.DataType;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -17,7 +17,7 @@ public class ExtraFieldDescriptor extends AbstractFieldDescriptor {
 
     private int size;
 
-    private final RawDataType type;
+    private final DataType type;
 
     public ExtraFieldDescriptor(Field field, PropertyDescriptor pd) {
         super(field, pd);
@@ -39,6 +39,7 @@ public class ExtraFieldDescriptor extends AbstractFieldDescriptor {
         return id;
     }
 
+
     @Override
     public int getSize() {
         return size;
@@ -49,7 +50,7 @@ public class ExtraFieldDescriptor extends AbstractFieldDescriptor {
     }
 
     @Override
-    public RawDataType getRawType() {
+    public DataType getDataType() {
         return type;
     }
 
@@ -59,7 +60,6 @@ public class ExtraFieldDescriptor extends AbstractFieldDescriptor {
         joiner.add("order=" + getId());
         joiner.add("name=" + getName());
         joiner.add("type=" + getFieldType().getName());
-        joiner.add("javaType=" + getJavaType());
         joiner.add("size=" + getSize());
         return "ExtraFieldDescriptor" + joiner;
     }

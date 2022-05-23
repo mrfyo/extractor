@@ -1,7 +1,7 @@
 package org.mrfyo.protocol.extractor.annotation;
 
 
-import org.mrfyo.protocol.extractor.enums.MessageType;
+import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 
 import java.lang.annotation.*;
 
@@ -26,12 +26,6 @@ public @interface Message {
     /**
      * 消息类型
      */
-    MessageType type() default MessageType.FIX;
+    InternalMessageType type() default InternalMessageType.ORDER;
 
-    /**
-     * 是否为下行消息
-     *
-     * @return 如果主机发往中断，返回 true，否则返回 false
-     */
-    boolean reply() default false;
 }

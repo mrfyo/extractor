@@ -1,7 +1,6 @@
 package org.mrfyo.protocol.extractor.annotation;
 
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.enums.DataType;
 
 import java.lang.annotation.*;
 
@@ -12,13 +11,11 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})
-public @interface FixedField {
+public @interface OrderField {
 
     int order() default 0;
 
     int size() default 0;
 
-    RawDataType type() default RawDataType.BYTES;
-
-    JavaDataType javaType() default JavaDataType.ANY;
+    DataType type() default DataType.BYTES;
 }

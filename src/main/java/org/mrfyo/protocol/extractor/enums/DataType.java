@@ -4,7 +4,7 @@ package org.mrfyo.protocol.extractor.enums;
  * @author Feyon
  * @date 2021/8/2
  */
-public enum RawDataType {
+public enum DataType {
     /**
      * Raw data type
      */
@@ -15,7 +15,7 @@ public enum RawDataType {
      */
     private final int size;
 
-    RawDataType(int size) {
+    DataType(int size) {
         this.size = size;
     }
 

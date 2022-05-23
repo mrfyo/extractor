@@ -2,7 +2,7 @@ package org.mrfyo.protocol.extractor.bean;
 
 
 import org.mrfyo.protocol.extractor.annotation.Message;
-import org.mrfyo.protocol.extractor.enums.MessageType;
+import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -25,19 +25,14 @@ public class MessageDescriptor<T> {
     private final String desc;
 
     /**
-     * is or not reply message
-     */
-    private final boolean reply;
-
-    /**
      * java type
      */
     private final Class<T> javaType;
 
     /**
-     * message type {@link MessageType}
+     * message type {@link InternalMessageType}
      */
-    private final MessageType messageType;
+    private final InternalMessageType messageType;
 
     /**
      * filed list
@@ -57,7 +52,6 @@ public class MessageDescriptor<T> {
         }
         this.id = message.id();
         this.desc = message.desc();
-        this.reply = message.reply();
         this.javaType = beanClass;
         this.messageType = message.type();
         this.annotations = beanClass.getAnnotations();
@@ -71,15 +65,11 @@ public class MessageDescriptor<T> {
         return desc;
     }
 
-    public boolean isReply() {
-        return reply;
-    }
-
     public Class<T> getJavaType() {
         return javaType;
     }
 
-    public MessageType getMessageType() {
+    public InternalMessageType getMessageType() {
         return messageType;
     }
 
@@ -96,7 +86,6 @@ public class MessageDescriptor<T> {
         StringJoiner joiner = new StringJoiner(",", "(", ")");
         joiner.add("order=" + getId());
         joiner.add("desc=" + getDesc());
-        joiner.add("isReply=" + isReply());
         return "ExtraFieldDescriptor" + joiner;
     }
 

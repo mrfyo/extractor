@@ -5,9 +5,7 @@ import org.mrfyo.protocol.extractor.annotation.Message;
 import org.mrfyo.protocol.extractor.bean.ExtraFieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
-import org.mrfyo.protocol.extractor.enums.MessageType;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 import org.mrfyo.protocol.extractor.util.FieldUtils;
 
 import java.beans.PropertyDescriptor;
@@ -23,7 +21,7 @@ public class ExtraMessageDescriptorBuilder extends MessageDescriptorBuilder {
     @Override
     boolean supported(Class<?> messageType) {
         Message annotation = messageType.getAnnotation(Message.class);
-        return annotation != null && annotation.type().equals(MessageType.EXTRA);
+        return annotation != null && annotation.type().equals(InternalMessageType.EXTRA);
     }
 
     @Override
@@ -37,16 +35,6 @@ public class ExtraMessageDescriptorBuilder extends MessageDescriptorBuilder {
             fieldDescriptors.add(new ExtraFieldDescriptor(field, pd));
         }
 
-        for (FieldDescriptor fd : fieldDescriptors) {
-            RawDataType rawType = fd.getRawType();
-            JavaDataType javaType = fd.getJavaType();
-            if (javaType.equals(JavaDataType.ANY)) {
-                continue;
-            }
-            if (!typeMatches(rawType, javaType)) {
-                throw new DescriptorBuilderException(fd.getName(), "raw type and java type mismatch");
-            }
-        }
         MessageDescriptor<T> messageDescriptor = MessageDescriptor.create(messageType);
         List<FieldDescriptor> fds = new ArrayList<>(fieldDescriptors);
         messageDescriptor.setFieldDescriptors(fds);

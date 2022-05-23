@@ -1,26 +1,25 @@
 package org.mrfyo.protocol.model;
 
 import lombok.Data;
-import org.mrfyo.protocol.extractor.annotation.FixedField;
+import org.mrfyo.protocol.extractor.annotation.OrderField;
 import org.mrfyo.protocol.extractor.annotation.Message;
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
-import org.mrfyo.protocol.extractor.enums.MessageType;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.enums.InternalMessageType;
+import org.mrfyo.protocol.extractor.enums.DataType;
 
 /**
  * @author Feng Yong
  */
 @Data
-@Message(id = 0x01, desc = "位置消息", type = MessageType.FIX)
+@Message(id = 0x01, desc = "位置消息", type = InternalMessageType.ORDER)
 public class Position {
 
-    @FixedField(type = RawDataType.DWORD, javaType = JavaDataType.INT)
+    @OrderField(type = DataType.DWORD)
     private int x;
 
-    @FixedField(type = RawDataType.DWORD, javaType = JavaDataType.INT)
+    @OrderField(type = DataType.DWORD)
     private int y;
 
-    @FixedField(type = RawDataType.DWORD, javaType = JavaDataType.INT)
+    @OrderField(type = DataType.DWORD)
     private int z;
 
     public Position() {

@@ -53,9 +53,8 @@ class ExtractorsTest {
     void header() {
         User user = new User();
         user.setId(1);
+        user.setSex(User.Sex.WOMAN);
         user.setMobile("015722223333");
-        user.setName("Jack Rose");
-
         check(user);
     }
 
@@ -67,7 +66,7 @@ class ExtractorsTest {
         System.out.println(HexUtil.encodeHexStr(buffer.byteArray()));
 
         Object obj = Extractors.unmarshal(buffer, message.getClass());
-
+        System.out.println(obj);
         assertEquals(message, obj);
     }
 }

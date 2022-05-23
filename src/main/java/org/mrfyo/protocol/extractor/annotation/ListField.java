@@ -10,10 +10,8 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@FixedField
+@OrderField
 public @interface ListField {
-
-    int itemSize();
 
     Class<?> itemType();
 }

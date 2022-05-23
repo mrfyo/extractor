@@ -1,17 +1,21 @@
 package org.mrfyo.protocol.extractor.enums;
 
+import org.mrfyo.protocol.extractor.message.MessageType;
+
 /**
  * @author Feyon
  * @date 2021/8/4
  */
-public enum MessageType {
+public enum InternalMessageType implements MessageType {
     /**
      * 固定长度的消息
      */
-    FIX,
+    ORDER,
 
     /**
-     * 指定ID的附加消息
+     *
      */
     EXTRA
+
+
 }

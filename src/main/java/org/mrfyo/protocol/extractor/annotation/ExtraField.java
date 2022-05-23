@@ -1,7 +1,6 @@
 package org.mrfyo.protocol.extractor.annotation;
 
-import org.mrfyo.protocol.extractor.enums.JavaDataType;
-import org.mrfyo.protocol.extractor.enums.RawDataType;
+import org.mrfyo.protocol.extractor.enums.DataType;
 
 import java.lang.annotation.*;
 
@@ -18,7 +17,6 @@ public @interface ExtraField {
 
     int size() default 0;
 
-    RawDataType rawType();
+    DataType rawType();
 
-    JavaDataType javaType() default JavaDataType.ANY;
 }
