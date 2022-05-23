@@ -1,8 +1,6 @@
 package org.mrfyo.protocol.extractor.annotation;
 
 
-import org.mrfyo.protocol.extractor.enums.InternalMessageType;
-
 import java.lang.annotation.*;
 
 /**
@@ -26,6 +24,6 @@ public @interface Message {
     /**
      * 消息类型
      */
-    InternalMessageType type() default InternalMessageType.ORDER;
+    int type() default 0;
 
 }

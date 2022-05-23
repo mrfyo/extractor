@@ -4,7 +4,7 @@ import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
 import org.mrfyo.protocol.extractor.io.ByteBufHelper;
 import org.mrfyo.protocol.extractor.io.Reader;
 import org.mrfyo.protocol.extractor.io.Writer;
-import org.mrfyo.protocol.extractor.message.MessageExtractorAggregator;
+import org.mrfyo.protocol.extractor.extractor.MessageExtractorAggregator;
 
 
 /**

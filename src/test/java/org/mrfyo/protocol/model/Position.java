@@ -3,14 +3,13 @@ package org.mrfyo.protocol.model;
 import lombok.Data;
 import org.mrfyo.protocol.extractor.annotation.OrderField;
 import org.mrfyo.protocol.extractor.annotation.Message;
-import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 import org.mrfyo.protocol.extractor.enums.DataType;
 
 /**
  * @author Feng Yong
  */
 @Data
-@Message(id = 0x01, desc = "位置消息", type = InternalMessageType.ORDER)
+@Message(id = 0x01, desc = "位置消息")
 public class Position {
 
     @OrderField(type = DataType.DWORD)

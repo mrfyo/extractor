@@ -1,12 +1,12 @@
 package org.mrfyo.protocol.extractor.factory;
 
+import org.mrfyo.protocol.extractor.MessageType;
 import org.mrfyo.protocol.extractor.annotation.OrderField;
 import org.mrfyo.protocol.extractor.annotation.Message;
 import org.mrfyo.protocol.extractor.bean.BasicFieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
 
-import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -20,7 +20,7 @@ public class OrderedMessageDescriptorBuilder extends MessageDescriptorBuilder {
     @Override
     boolean supported(Class<?> messageType) {
         Message annotation = messageType.getAnnotation(Message.class);
-        return annotation != null && annotation.type().equals(InternalMessageType.ORDER);
+        return annotation != null && annotation.type() == MessageType.ORDER;
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.mrfyo.protocol.extractor.bean;
 
 
 import org.mrfyo.protocol.extractor.annotation.Message;
-import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -30,9 +29,9 @@ public class MessageDescriptor<T> {
     private final Class<T> javaType;
 
     /**
-     * message type {@link InternalMessageType}
+     * message type
      */
-    private final InternalMessageType messageType;
+    private final int messageType;
 
     /**
      * filed list
@@ -69,7 +68,7 @@ public class MessageDescriptor<T> {
         return javaType;
     }
 
-    public InternalMessageType getMessageType() {
+    public int getMessageType() {
         return messageType;
     }
 

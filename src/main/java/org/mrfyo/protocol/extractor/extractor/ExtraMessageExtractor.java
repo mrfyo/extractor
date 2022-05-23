@@ -1,10 +1,10 @@
-package org.mrfyo.protocol.extractor.message;
+package org.mrfyo.protocol.extractor.extractor;
 
 import cn.hutool.core.util.ReflectUtil;
+import org.mrfyo.protocol.extractor.MessageType;
 import org.mrfyo.protocol.extractor.bean.ExtraFieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
-import org.mrfyo.protocol.extractor.enums.InternalMessageType;
 import org.mrfyo.protocol.extractor.factory.MessageDescriptorFactory;
 import org.mrfyo.protocol.extractor.type.TypeHandlerAggregator;
 import org.mrfyo.protocol.extractor.io.Reader;
@@ -39,7 +39,7 @@ public class ExtraMessageExtractor implements MessageExtractor {
 
     @Override
     public boolean supported(MessageDescriptor<?> descriptor) {
-        return descriptor.getMessageType().equals(InternalMessageType.EXTRA);
+        return descriptor.getMessageType() == MessageType.EXTRA;
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.mrfyo.protocol.extractor.annotation.Message;
 import org.mrfyo.protocol.extractor.bean.ExtraFieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.FieldDescriptor;
 import org.mrfyo.protocol.extractor.bean.MessageDescriptor;
-import org.mrfyo.protocol.extractor.enums.InternalMessageType;
+import org.mrfyo.protocol.extractor.MessageType;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -20,7 +20,7 @@ public class ExtraMessageDescriptorBuilder extends MessageDescriptorBuilder {
     @Override
     boolean supported(Class<?> messageType) {
         Message annotation = messageType.getAnnotation(Message.class);
-        return annotation != null && annotation.type().equals(InternalMessageType.EXTRA);
+        return annotation != null && annotation.type() == MessageType.EXTRA;
     }
 
     @Override
