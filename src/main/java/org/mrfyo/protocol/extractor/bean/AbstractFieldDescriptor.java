@@ -1,7 +1,5 @@
 package org.mrfyo.protocol.extractor.bean;
 
-import cn.hutool.core.convert.Convert;
-
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -21,10 +19,8 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
     private final String name;
 
     /**
-     * filed type
+     * field
      */
-    private final Class<?> fieldType;
-
     private final Field field;
 
     /**
@@ -49,19 +45,11 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
         this.writeMethod = pd.getWriteMethod();
         this.readMethod = pd.getReadMethod();
         this.annotations = initAnnotations(field);
-        this.fieldType = initFieldType(field.getType());
     }
 
 
     private List<Annotation> initAnnotations(Field field) {
         return new ArrayList<>(Arrays.asList(field.getAnnotations()));
-    }
-
-    /**
-     * 将基本类型统一转换为其对应的包装类型
-     */
-    protected Class<?> initFieldType(Class<?> fieldType) {
-        return Convert.wrap(fieldType);
     }
 
     @Override
@@ -81,7 +69,7 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
 
     @Override
     public Class<?> getFieldType() {
-        return fieldType;
+        return field.getType();
     }
 
     @Override

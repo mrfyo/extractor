@@ -102,6 +102,9 @@ public class FixedMessageExtractor implements MessageExtractor {
         if (type == Double.class || type == Float.class) {
             return 0.0;
         }
+        if (type == String.class) {
+            return "";
+        }
         return null;
     }
 

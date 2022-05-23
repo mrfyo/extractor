@@ -77,7 +77,7 @@ public class MessageDescriptor<T> {
     }
 
     public List<FieldDescriptor> getFieldDescriptors() {
-        return fieldDescriptors;
+        return Collections.unmodifiableList(fieldDescriptors);
     }
 
     @Override

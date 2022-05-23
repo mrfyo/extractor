@@ -89,7 +89,7 @@ public class MessageExtractorAggregator implements MessageExtractor {
         this.extractors.add(extractor);
     }
 
-    public void addExtractorAll(Collection<MessageExtractor> extractors) {
+    public void addAllExtractor(Collection<MessageExtractor> extractors) {
         this.extractors.addAll(extractors);
     }
 

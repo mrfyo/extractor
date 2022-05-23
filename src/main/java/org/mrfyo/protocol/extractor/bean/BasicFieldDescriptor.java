@@ -18,13 +18,13 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
 
     private final int size;
 
-    private final DataType rawType;
+    private final DataType dataType;
 
     public BasicFieldDescriptor(Field field, PropertyDescriptor pd){
         super(field, pd);
         OrderField orderField = getAnnotation(OrderField.class, "BasicField Required");
         this.order = orderField.order();
-        this.rawType = orderField.type();
+        this.dataType = orderField.type();
         this.size = initSize(orderField);
     }
 
@@ -47,7 +47,7 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
 
     @Override
     public DataType getDataType() {
-        return rawType;
+        return dataType;
     }
 
 
