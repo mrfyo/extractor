@@ -1,4 +1,4 @@
-package org.mrfyo.extractor.extractor;
+package org.mrfyo.extractor.message;
 
 
 import org.mrfyo.extractor.bean.MessageDescriptor;

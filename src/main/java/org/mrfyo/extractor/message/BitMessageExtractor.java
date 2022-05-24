@@ -1,4 +1,4 @@
-package org.mrfyo.extractor.extractor;
+package org.mrfyo.extractor.message;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ReflectUtil;
@@ -10,6 +10,7 @@ import org.mrfyo.extractor.bean.MessageDescriptor;
 import org.mrfyo.extractor.factory.MessageDescriptorFactory;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
+import org.mrfyo.extractor.util.ReaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,17 +33,7 @@ public class BitMessageExtractor implements MessageExtractor {
 
     @Override
     public Object unmarshal(Reader reader, MessageDescriptor<?> descriptor) {
-        long b;
-        int n = reader.readableBytes();
-        if (n == 1) {
-            b = reader.readUint8();
-        } else if (n == 2) {
-            b = reader.readUint16();
-        } else if (n == 4) {
-            b = reader.readUint32();
-        } else {
-            throw new ExtractException("unsupported byte length: " + n);
-        }
+        long b = ReaderUtil.readLong(reader, reader.readableBytes());
         Object instance = ReflectUtil.newInstance(descriptor.getJavaType());
         for (FieldDescriptor fd : descriptor.getFieldDescriptors()) {
             BitFieldDescriptor bfd = (BitFieldDescriptor) fd;
@@ -50,8 +41,7 @@ public class BitMessageExtractor implements MessageExtractor {
             try {
                 int index = bfd.getIndex();
                 long v = (b >> index) & 0x01;
-                 fd.getWriteMethod().invoke(instance, Convert.convert(fieldType, v));
-
+                fd.getWriteMethod().invoke(instance, Convert.convert(fieldType, v));
             } catch (Exception e) {
                 String message = String.format("[unmarshal] id is %x, for %s.%s; nest message is %s",
                         descriptor.getId(),

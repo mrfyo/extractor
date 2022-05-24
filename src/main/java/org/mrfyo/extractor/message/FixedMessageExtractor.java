@@ -1,4 +1,4 @@
-package org.mrfyo.extractor.extractor;
+package org.mrfyo.extractor.message;
 
 import cn.hutool.core.util.ReflectUtil;
 import org.mrfyo.extractor.ExtractException;

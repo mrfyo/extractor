@@ -44,7 +44,7 @@ public abstract class MessageDescriptorBuilder {
         }
     }
 
-    public List<Field> getDeclaredFields(Class<?> clazz, boolean includeSupper, Predicate<Field> matcher) {
+    protected List<Field> getDeclaredFields(Class<?> clazz, boolean includeSupper, Predicate<Field> matcher) {
         List<Field> fields = new ArrayList<>();
         if(includeSupper) {
             Class<?> superclass = clazz.getSuperclass();

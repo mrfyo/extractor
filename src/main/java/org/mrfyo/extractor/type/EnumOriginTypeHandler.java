@@ -4,6 +4,7 @@ import org.mrfyo.extractor.ExtractException;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
+import org.mrfyo.extractor.util.WriterUtil;
 
 
 /**
@@ -25,17 +26,17 @@ public class EnumOriginTypeHandler<E extends Enum<E>> implements TypeHandler<E> 
 
     @Override
     public void marshal(Writer writer, FieldDescriptor descriptor, E value) throws ExtractException {
-        boolean exists = false;
+        int v = -1;
         for (int i = 0; i < enums.length; i++) {
             if (enums[i].equals(value)) {
-                writer.writeUint8(i);
-                exists = true;
+                v = i;
                 break;
             }
         }
-        if (!exists) {
-            writer.writeUint8(0);
+        if (v < 0) {
+            throw new ExtractException("cannot convert " + value + " to " + descriptor.getDataType() + " by origin value");
         }
+        WriterUtil.writeInt(writer, v, descriptor.getDataType());
     }
 
     @Override
