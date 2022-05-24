@@ -2,6 +2,7 @@ package org.mrfyo.extractor.type;
 
 import cn.hutool.core.util.ReflectUtil;
 import org.mrfyo.extractor.ExtractException;
+import org.mrfyo.extractor.annotation.Embedded;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.io.Writer;
 import org.mrfyo.extractor.annotation.Support;
@@ -45,46 +46,53 @@ public class TypeHandlerAggregator implements TypeHandler<Object> {
         ReflectUtil.invoke(getFieldExtractor(descriptor), "marshal", writer, descriptor, value);
     }
 
-    private TypeHandler<?> getFieldExtractor(FieldDescriptor descriptor) {
-        Support support = descriptor.getAnnotation(Support.class);
-        if (support != null) {
-            Class<? extends TypeHandler> customizedExtractor = support.value();
-            TypeHandler<?> typeHandler = registry.getExtractor(customizedExtractor);
-            if (typeHandler != null) {
+    private TypeHandler<?> getFieldExtractor(FieldDescriptor descriptor) throws ExtractException {
+        try {
+            Class<?> fieldType = descriptor.getFieldType();
+            Support support = descriptor.getAnnotation(Support.class);
+            if (support != null) {
+                Class<? extends TypeHandler<?>> customizedExtractor = support.value();
+                return createTypeHandler(customizedExtractor, descriptor);
+            }
+            Embedded embedded = descriptor.getAnnotation(Embedded.class);
+            if (embedded != null) {
+                return registry.getExtractor(Object.class);
+            }
+
+            TypeHandler<?> extractor = registry.getExtractor(fieldType);
+            if (extractor != null) {
+                return extractor;
+            }
+
+            if (fieldType.isEnum()) {
+                TypeHandler<?> typeHandler = createTypeHandler(EnumOriginTypeHandler.class, descriptor);
+                registry.register(fieldType, typeHandler);
                 return typeHandler;
             }
-            Constructor<?> constructor = customizedExtractor.getDeclaredConstructors()[0];
-            if (constructor.getParameterCount() == 0) {
-                typeHandler = ReflectUtil.newInstance(customizedExtractor);
-            } else {
-                Class<?>[] parameterTypes = constructor.getParameterTypes();
-                Object[] params = new Object[parameterTypes.length];
-                for (int i = 0; i < parameterTypes.length; i++) {
-                    Class<?> pt = parameterTypes[i];
-                    if (pt.isAssignableFrom(FieldDescriptor.class)) {
-                        params[i] = descriptor;
-                    } else if (pt.isAssignableFrom(Class.class)) {
-                        params[i] = descriptor.getFieldType();
-                    } else if (pt.isAssignableFrom(Field.class)) {
-                        params[i] = descriptor.getField();
-                    } else {
-                        throw new IllegalArgumentException("cannot construct instance " + customizedExtractor.getTypeName());
-                    }
-                }
-                typeHandler = ReflectUtil.newInstance(customizedExtractor, params);
-            }
-            if (typeHandler != null) {
-                registry.register(customizedExtractor, typeHandler);
-            }
-            return typeHandler;
+            throw new ExtractException("cannot found type handler to handle this type " + descriptor);
+        } catch (Exception e) {
+            throw new ExtractException(e);
         }
 
-        Class<?> fieldType = descriptor.getFieldType();
-        TypeHandler<?> extractor = registry.getExtractor(fieldType);
-        if (extractor == null) {
-            return registry.getExtractor(Object.class);
-        }
-        return extractor;
     }
 
+    private <T extends TypeHandler<?>> T createTypeHandler(Class<T> type, FieldDescriptor descriptor) {
+        Constructor<?> constructor = type.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
+        Object[] params = new Object[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Class<?> pt = parameterTypes[i];
+            if (pt.isAssignableFrom(FieldDescriptor.class)) {
+                params[i] = descriptor;
+            } else if (pt.isAssignableFrom(Class.class)) {
+                params[i] = descriptor.getFieldType();
+            } else if (pt.isAssignableFrom(Field.class)) {
+                params[i] = descriptor.getField();
+            } else {
+                throw new IllegalArgumentException("cannot construct instance " + type.getTypeName());
+            }
+        }
+        return ReflectUtil.newInstance(type, params);
+    }
 }

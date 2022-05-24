@@ -21,7 +21,6 @@ public class User {
     private String mobile;
 
     @OrderField(type = DataType.BYTE)
-    @Support(EnumOriginTypeHandler.class)
     private Sex sex;
 
 

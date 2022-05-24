@@ -1,8 +1,5 @@
 package org.mrfyo.extractor.annotation;
 
-
-import org.mrfyo.extractor.type.TypeHandler;
-
 import java.lang.annotation.*;
 
 /**
@@ -11,6 +8,5 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Support {
-    Class<? extends TypeHandler<?>> value();
+public @interface Embedded {
 }
