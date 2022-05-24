@@ -4,6 +4,7 @@ import org.mrfyo.extractor.bean.MessageDescriptor;
 import org.mrfyo.extractor.io.ByteBufHelper;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
+import org.mrfyo.extractor.message.MessageExtractor;
 import org.mrfyo.extractor.message.MessageExtractorAggregator;
 
 
@@ -12,12 +13,12 @@ import org.mrfyo.extractor.message.MessageExtractorAggregator;
  */
 public class Extractors {
 
-    private volatile static MessageExtractorAggregator extractor;
+    private volatile static MessageExtractor extractor;
 
     private Extractors() {
     }
 
-    public static MessageExtractorAggregator getExtractor() {
+    public static MessageExtractor getExtractor() {
         if (extractor == null) {
             synchronized (Extractors.class) {
                 if (extractor == null) {

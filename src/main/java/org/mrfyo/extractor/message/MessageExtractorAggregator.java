@@ -25,8 +25,6 @@ public class MessageExtractorAggregator implements MessageExtractor {
 
     private final MessageDescriptorFactory descriptorFactory;
 
-    private final TypeHandlerRegistry registry;
-
     private final TypeHandlerAggregator typeHandlerAggregator;
 
     public MessageExtractorAggregator() {
@@ -34,12 +32,16 @@ public class MessageExtractorAggregator implements MessageExtractor {
     }
 
     public MessageExtractorAggregator(TypeHandlerRegistry registry) {
-        this.descriptorFactory = new CacheMessageDescriptorFactory();
-        this.registry = registry;
-        this.typeHandlerAggregator = new TypeHandlerAggregator(registry);
+        this(new CacheMessageDescriptorFactory(), new TypeHandlerAggregator(registry));
         addExtractor(new FixedMessageExtractor(typeHandlerAggregator, descriptorFactory));
         addExtractor(new ExtraMessageExtractor(typeHandlerAggregator, descriptorFactory));
         addExtractor(new BitMessageExtractor(descriptorFactory));
+    }
+
+    public MessageExtractorAggregator(MessageDescriptorFactory descriptorFactory,
+                                      TypeHandlerAggregator typeHandlerAggregator) {
+        this.descriptorFactory = descriptorFactory;
+        this.typeHandlerAggregator = typeHandlerAggregator;
     }
 
 
@@ -92,10 +94,6 @@ public class MessageExtractorAggregator implements MessageExtractor {
 
     public void addAllExtractor(Collection<MessageExtractor> extractors) {
         this.extractors.addAll(extractors);
-    }
-
-    public TypeHandlerRegistry getRegistry() {
-        return registry;
     }
 
     public TypeHandlerAggregator getFieldExtractorAggregator() {
