@@ -22,6 +22,7 @@ public class CacheMessageDescriptorFactory implements MessageDescriptorFactory {
     public CacheMessageDescriptorFactory() {
         addBuilder(new OrderedMessageDescriptorBuilder());
         addBuilder(new ExtraMessageDescriptorBuilder());
+        addBuilder(new BitMessageDescriptorBuilder());
     }
 
     /**

@@ -80,14 +80,6 @@ public class MessageDescriptor<T> {
         return Collections.unmodifiableList(fieldDescriptors);
     }
 
-    @Override
-    public String toString() {
-        StringJoiner joiner = new StringJoiner(",", "(", ")");
-        joiner.add("order=" + getId());
-        joiner.add("desc=" + getDesc());
-        return "ExtraFieldDescriptor" + joiner;
-    }
-
 
     public static <T> MessageDescriptor<T> create(Class<T> clazz) {
         return new MessageDescriptor<>(clazz);
@@ -105,5 +97,13 @@ public class MessageDescriptor<T> {
 
     public boolean hasAnnotation(Class<? extends Annotation> annotationType) {
         return getAnnotation(annotationType) != null;
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner(",", "(", ")");
+        joiner.add("order=" + getId());
+        joiner.add("desc=" + getDesc());
+        return "MessageDescriptor" + joiner;
     }
 }

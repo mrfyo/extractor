@@ -39,6 +39,7 @@ public class MessageExtractorAggregator implements MessageExtractor {
         this.typeHandlerAggregator = new TypeHandlerAggregator(registry);
         addExtractor(new FixedMessageExtractor(typeHandlerAggregator, descriptorFactory));
         addExtractor(new ExtraMessageExtractor(typeHandlerAggregator, descriptorFactory));
+        addExtractor(new BitMessageExtractor(descriptorFactory));
     }
 
 
