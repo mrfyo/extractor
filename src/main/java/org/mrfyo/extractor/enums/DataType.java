@@ -6,9 +6,19 @@ package org.mrfyo.extractor.enums;
  */
 public enum DataType {
     /**
-     * Raw data type
+     * unsigned data type
      */
-    BYTE(1), WORD(2), DWORD(4), BYTES(0);
+    BYTE(1), WORD(2), DWORD(4),
+
+    /**
+     * signed data type
+     */
+    INT8(1), INT16(2), INT32(4),
+
+    /**
+     * byte array type
+     */
+    BYTES(0);
 
     /**
      * the length of bytes.

@@ -14,11 +14,6 @@ import java.util.List;
  */
 public abstract class AbstractFieldDescriptor implements FieldDescriptor {
     /**
-     * filed name
-     */
-    private final String name;
-
-    /**
      * field
      */
     private final Field field;
@@ -33,23 +28,11 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
      */
     private final Method readMethod;
 
-    /**
-     * annotation arrays
-     */
-    private final List<Annotation> annotations;
-
 
     public AbstractFieldDescriptor(Field field, PropertyDescriptor pd) {
-        this.name = field.getName();
         this.field = field;
         this.writeMethod = pd.getWriteMethod();
         this.readMethod = pd.getReadMethod();
-        this.annotations = initAnnotations(field);
-    }
-
-
-    private List<Annotation> initAnnotations(Field field) {
-        return new ArrayList<>(Arrays.asList(field.getAnnotations()));
     }
 
     @Override
@@ -74,17 +57,12 @@ public abstract class AbstractFieldDescriptor implements FieldDescriptor {
 
     @Override
     public String getName() {
-        return name;
+        return field.getName();
     }
 
     @Override
     public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        for (Annotation annotation : annotations) {
-            if (annotationType.isInstance(annotation)) {
-                return annotationType.cast(annotation);
-            }
-        }
-        return null;
+        return field.getAnnotation(annotationType);
     }
 
     public <T extends Annotation> T getAnnotation(Class<T> annotationType, String message) {

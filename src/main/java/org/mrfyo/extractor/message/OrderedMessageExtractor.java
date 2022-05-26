@@ -3,6 +3,7 @@ package org.mrfyo.extractor.message;
 import cn.hutool.core.util.ReflectUtil;
 import org.mrfyo.extractor.ExtractException;
 import org.mrfyo.extractor.MessageType;
+import org.mrfyo.extractor.annotation.OrderField;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
 import org.mrfyo.extractor.bean.OrderedFieldDescriptor;
@@ -35,7 +36,7 @@ public class OrderedMessageExtractor implements MessageExtractor {
 
     @Override
     public boolean supported(MessageDescriptor<?> descriptor) {
-        return descriptor.getMessageType() == MessageType.ORDER;
+        return descriptor.hasAnnotation(OrderField.class);
     }
 
     @Override

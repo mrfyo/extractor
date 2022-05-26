@@ -1,16 +1,14 @@
 package org.mrfyo.extractor.annotation;
 
-
 import java.lang.annotation.*;
 
 /**
- * @author Feyon
- * @date 2021/8/2
+ * @author Feng Yong
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Message {
+public @interface OrderMessage {
     /**
      * 消息ID
      */
@@ -20,10 +18,4 @@ public @interface Message {
      * 消息描述
      */
     String desc() default "";
-
-    /**
-     * 消息类型
-     */
-    int type() default 0;
-
 }

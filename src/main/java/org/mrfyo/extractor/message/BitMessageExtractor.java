@@ -2,8 +2,7 @@ package org.mrfyo.extractor.message;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ReflectUtil;
-import org.mrfyo.extractor.ExtractException;
-import org.mrfyo.extractor.MessageType;
+import org.mrfyo.extractor.annotation.BitMessage;
 import org.mrfyo.extractor.bean.BitFieldDescriptor;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
@@ -11,6 +10,7 @@ import org.mrfyo.extractor.factory.MessageDescriptorFactory;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
 import org.mrfyo.extractor.util.ReaderUtil;
+import org.mrfyo.extractor.util.WriterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class BitMessageExtractor implements MessageExtractor {
 
     @Override
     public boolean supported(MessageDescriptor<?> descriptor) {
-        return descriptor.getMessageType() == MessageType.BIT;
+        return descriptor.hasAnnotation(BitMessage.class);
     }
 
     @Override
@@ -71,15 +71,8 @@ public class BitMessageExtractor implements MessageExtractor {
             b |= (bit << index);
             maxIndex = Math.max(maxIndex, index);
         }
-        if (maxIndex < 8) {
-            writer.writeUint8(b);
-        } else if (maxIndex < 16) {
-            writer.writeUint16(b);
-        } else if (b == 4) {
-            writer.writeUint32(b);
-        } else {
-            throw new ExtractException("unsupported max index: " + maxIndex);
-        }
+        BitMessage bitMessage = descriptor.getJavaType().getAnnotation(BitMessage.class);
+        WriterUtil.writeInt(writer, b, bitMessage.dataType());
     }
 
     @SuppressWarnings("unchecked")

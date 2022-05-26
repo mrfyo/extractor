@@ -1,6 +1,7 @@
 package org.mrfyo.extractor;
 
 import org.mrfyo.extractor.bean.MessageDescriptor;
+import org.mrfyo.extractor.factory.MessageDescriptorFactory;
 import org.mrfyo.extractor.io.ByteBufHelper;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
@@ -13,12 +14,12 @@ import org.mrfyo.extractor.message.MessageExtractorAggregator;
  */
 public class Extractors {
 
-    private volatile static MessageExtractor extractor;
+    private volatile static MessageExtractorAggregator extractor;
 
     private Extractors() {
     }
 
-    public static MessageExtractor getExtractor() {
+    public static MessageExtractorAggregator getExtractor() {
         if (extractor == null) {
             synchronized (Extractors.class) {
                 if (extractor == null) {
@@ -29,9 +30,10 @@ public class Extractors {
         return extractor;
     }
 
-    public static void setExtractor(MessageExtractorAggregator extractor) {
-        Extractors.extractor = extractor;
+    public static MessageDescriptorFactory messageDescriptorFactory() {
+        return getExtractor().getDescriptorFactory();
     }
+
 
     /**
      * 编组实体类，写入到 {@link Writer}
@@ -103,5 +105,7 @@ public class Extractors {
     }
 
 
-
+    public static int getMessageId(Class<?> type) {
+        return messageDescriptorFactory().getMessageDescriptor(type).getId();
+    }
 }

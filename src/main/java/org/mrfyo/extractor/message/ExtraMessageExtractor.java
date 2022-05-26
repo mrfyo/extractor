@@ -2,14 +2,16 @@ package org.mrfyo.extractor.message;
 
 import cn.hutool.core.util.ReflectUtil;
 import org.mrfyo.extractor.ExtractException;
-import org.mrfyo.extractor.MessageType;
+import org.mrfyo.extractor.annotation.ExtraMessage;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
+import org.mrfyo.extractor.enums.DataType;
 import org.mrfyo.extractor.factory.MessageDescriptorFactory;
 import org.mrfyo.extractor.bean.ExtraFieldDescriptor;
 import org.mrfyo.extractor.type.TypeHandlerAggregator;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
+import org.mrfyo.extractor.util.ReaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +42,16 @@ public class ExtraMessageExtractor implements MessageExtractor {
 
     @Override
     public boolean supported(MessageDescriptor<?> descriptor) {
-        return descriptor.getMessageType() == MessageType.EXTRA;
+        return descriptor.hasAnnotation(ExtraMessage.class);
     }
 
     @Override
     public Object unmarshal(Reader reader, MessageDescriptor<?> descriptor) {
         Object instance = ReflectUtil.newInstance(descriptor.getJavaType());
+
+        ExtraMessage extraMessage = descriptor.getAnnotation(ExtraMessage.class);
+        DataType keyDataType = extraMessage.keyDataType();
+        DataType lengthDataType = extraMessage.lengthDataType();
 
         List<FieldDescriptor> fieldDescriptors = descriptor.getFieldDescriptors();
         Map<Integer, ExtraFieldDescriptor> descriptorMap = fieldDescriptors.stream()
@@ -53,12 +59,11 @@ public class ExtraMessageExtractor implements MessageExtractor {
                 .collect(Collectors.toMap(ExtraFieldDescriptor::getId, ed -> ed));
 
         try {
-            // ID 2 byte + LENGTH 1 byte
-            int minSize = 3;
+            int minSize = keyDataType.getSize() + lengthDataType.getSize();
             StringJoiner joiner = new StringJoiner(",", "[", "]");
             while (reader.isReadable(minSize)) {
-                int id = reader.readUint16();
-                int len = reader.readUint8();
+                int id = ReaderUtil.readInt(reader, keyDataType);
+                int len = ReaderUtil.readInt(reader, lengthDataType);
                 Reader r = reader.readBytes(len);
                 try {
                     if (descriptorMap.containsKey(id)) {

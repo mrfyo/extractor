@@ -1,8 +1,7 @@
 package org.mrfyo.extractor.factory;
 
-import org.mrfyo.extractor.annotation.Message;
-import org.mrfyo.extractor.MessageType;
 import org.mrfyo.extractor.annotation.OrderField;
+import org.mrfyo.extractor.annotation.OrderMessage;
 import org.mrfyo.extractor.bean.OrderedFieldDescriptor;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
@@ -15,12 +14,11 @@ import java.util.*;
 /**
  * @author Feng Yong
  */
-public class OrderedMessageDescriptorBuilder extends MessageDescriptorBuilder {
+public class OrderedBaseMessageDescriptorBuilder extends BaseMessageDescriptorBuilder {
 
     @Override
     boolean supported(Class<?> messageType) {
-        Message annotation = messageType.getAnnotation(Message.class);
-        return annotation != null && annotation.type() == MessageType.ORDER;
+        return messageType.isAnnotationPresent(OrderMessage.class);
     }
 
     @Override
@@ -43,11 +41,13 @@ public class OrderedMessageDescriptorBuilder extends MessageDescriptorBuilder {
                 throw new DescriptorBuilderException(fd.getName(), "fixed filed: size cannot less than 0");
             }
         }
-        MessageDescriptor<T> messageDescriptor = MessageDescriptor.create(messageType);
         List<FieldDescriptor> fds = new ArrayList<>(fieldDescriptors);
-        messageDescriptor.setFieldDescriptors(fds);
-        return messageDescriptor;
+        return create(messageType, fds);
     }
 
-
+    private  <T> MessageDescriptor<T> create(Class<T> messageType, List<FieldDescriptor> fds) {
+        OrderMessage message = messageType.getAnnotation(OrderMessage.class);
+        String type = OrderMessage.class.getSimpleName();
+        return new MessageDescriptor<>(message.id(), type, message.desc(), messageType, fds);
+    }
 }

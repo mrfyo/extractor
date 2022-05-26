@@ -1,8 +1,7 @@
 package org.mrfyo.extractor.factory;
 
-import org.mrfyo.extractor.MessageType;
 import org.mrfyo.extractor.annotation.BitField;
-import org.mrfyo.extractor.annotation.Message;
+import org.mrfyo.extractor.annotation.BitMessage;
 import org.mrfyo.extractor.bean.BitFieldDescriptor;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
@@ -16,12 +15,11 @@ import java.util.List;
 /**
  * @author Feng Yong
  */
-public class BitMessageDescriptorBuilder extends MessageDescriptorBuilder {
+public class BitBaseMessageDescriptorBuilder extends BaseMessageDescriptorBuilder {
 
     @Override
     boolean supported(Class<?> messageType) {
-        Message annotation = messageType.getAnnotation(Message.class);
-        return annotation != null && annotation.type() == MessageType.BIT;
+        return messageType.isAnnotationPresent(BitMessage.class);
     }
 
     @Override
@@ -31,16 +29,16 @@ public class BitMessageDescriptorBuilder extends MessageDescriptorBuilder {
 
         List<BitFieldDescriptor> fieldDescriptors = new ArrayList<>(fields.size());
         for (Field field : fields) {
-            PropertyDescriptor pd = getPropertyDescriptor(field.getName(), messageType);;
+            PropertyDescriptor pd = getPropertyDescriptor(field.getName(), messageType);
             fieldDescriptors.add(new BitFieldDescriptor(field, pd));
         }
         fieldDescriptors.sort(Comparator.comparing(BitFieldDescriptor::getIndex));
-
-        MessageDescriptor<T> messageDescriptor = MessageDescriptor.create(messageType);
         List<FieldDescriptor> fds = new ArrayList<>(fieldDescriptors);
-        messageDescriptor.setFieldDescriptors(fds);
-        return messageDescriptor;
+        return create(messageType, fds);
     }
 
-
+    private  <T> MessageDescriptor<T> create(Class<T> messageType, List<FieldDescriptor> fds) {
+        String type = BitMessage.class.getSimpleName();
+        return new MessageDescriptor<>(0, type, "", messageType, fds);
+    }
 }

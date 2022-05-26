@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 /**
  * @author Feng Yong
  */
-public abstract class MessageDescriptorBuilder {
+public abstract class BaseMessageDescriptorBuilder {
 
 
     /**

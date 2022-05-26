@@ -1,6 +1,5 @@
 package org.mrfyo.extractor.io;
 
-import cn.hutool.core.util.HexUtil;
 import org.mrfyo.extractor.ExtractException;
 
 
@@ -58,12 +57,6 @@ public class ByteBufHelper implements Writer, Reader {
         return ((long) a1 << 24) + (a2 << 16) + (a3 << 8) + a4;
     }
 
-    @Override
-    public String readBcd(int n) {
-        byte[] b = new byte[n];
-        readBytes(b);
-        return HexUtil.encodeHexStr(b);
-    }
 
     @Override
     public void readBytes(byte[] dst) {

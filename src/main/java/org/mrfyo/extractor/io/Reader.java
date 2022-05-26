@@ -27,13 +27,6 @@ public interface Reader {
      */
     long readUint32();
 
-    /**
-     * read BCD[n]
-     *
-     * @param n BCD len
-     * @return BCD len
-     */
-    String readBcd(int n);
 
     /**
      * read bytes that's size equal param array length
