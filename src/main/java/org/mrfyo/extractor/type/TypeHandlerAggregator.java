@@ -47,6 +47,14 @@ public class TypeHandlerAggregator implements TypeHandler<Object> {
     }
 
     private TypeHandler<?> getFieldExtractor(FieldDescriptor descriptor) throws ExtractException {
+        TypeHandler<?> typeHandler = findTypeHandler(descriptor);
+        if (typeHandler == null) {
+            throw new ExtractException("cannot handle " + descriptor);
+        }
+        return typeHandler;
+    }
+
+    private TypeHandler<?> findTypeHandler(FieldDescriptor descriptor) {
         try {
             Class<?> fieldType = descriptor.getFieldType();
             Support support = descriptor.getAnnotation(Support.class);
@@ -69,11 +77,10 @@ public class TypeHandlerAggregator implements TypeHandler<Object> {
                 registry.register(fieldType, typeHandler);
                 return typeHandler;
             }
-            throw new ExtractException("cannot found type handler to handle this type " + descriptor);
         } catch (Exception e) {
             throw new ExtractException(e);
         }
-
+        return null;
     }
 
     private <T extends TypeHandler<?>> T createTypeHandler(Class<T> type, FieldDescriptor descriptor) {

@@ -1,6 +1,7 @@
 package org.mrfyo.extractor.message;
 
 import cn.hutool.core.util.ReflectUtil;
+import org.mrfyo.extractor.ExtractException;
 import org.mrfyo.extractor.MessageType;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
@@ -79,7 +80,7 @@ public class ExtraMessageExtractor implements MessageExtractor {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ExtractException(e);
         }
 
         return instance;

@@ -5,8 +5,8 @@ import org.mrfyo.extractor.ExtractException;
 import org.mrfyo.extractor.MessageType;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
+import org.mrfyo.extractor.bean.OrderedFieldDescriptor;
 import org.mrfyo.extractor.factory.MessageDescriptorFactory;
-import org.mrfyo.extractor.bean.BasicFieldDescriptor;
 import org.mrfyo.extractor.type.TypeHandlerAggregator;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
@@ -19,15 +19,15 @@ import java.util.List;
  * @author Feyon
  * @date 2021/8/2
  */
-public class FixedMessageExtractor implements MessageExtractor {
+public class OrderedMessageExtractor implements MessageExtractor {
 
-    private final Logger log = LoggerFactory.getLogger(FixedMessageExtractor.class);
+    private final Logger log = LoggerFactory.getLogger(OrderedMessageExtractor.class);
 
     private final TypeHandlerAggregator fieldExtractor;
 
     private final MessageDescriptorFactory descriptorFactory;
 
-    public FixedMessageExtractor(TypeHandlerAggregator extractor, MessageDescriptorFactory descriptorFactory) {
+    public OrderedMessageExtractor(TypeHandlerAggregator extractor, MessageDescriptorFactory descriptorFactory) {
         this.fieldExtractor = extractor;
         this.descriptorFactory = descriptorFactory;
     }
@@ -44,7 +44,7 @@ public class FixedMessageExtractor implements MessageExtractor {
 
         List<FieldDescriptor> fieldDescriptors = descriptor.getFieldDescriptors();
         for (int i = 0; i < fieldDescriptors.size(); i++) {
-            BasicFieldDescriptor fd = (BasicFieldDescriptor) fieldDescriptors.get(i);
+            OrderedFieldDescriptor fd = (OrderedFieldDescriptor) fieldDescriptors.get(i);
             int size = fd.getSize();
             if (size == 0 && i == fieldDescriptors.size() - 1) {
                 size = reader.readableBytes();
@@ -85,6 +85,7 @@ public class FixedMessageExtractor implements MessageExtractor {
             } catch (Exception e) {
                 log.error("[encode] id is {}, field is {}; nest message is {}",
                         Integer.toHexString(descriptor.getId()), fd.getName(), e.getMessage());
+                e.printStackTrace();
             }
         }
     }

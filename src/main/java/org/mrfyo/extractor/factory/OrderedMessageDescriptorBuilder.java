@@ -3,7 +3,7 @@ package org.mrfyo.extractor.factory;
 import org.mrfyo.extractor.annotation.Message;
 import org.mrfyo.extractor.MessageType;
 import org.mrfyo.extractor.annotation.OrderField;
-import org.mrfyo.extractor.bean.BasicFieldDescriptor;
+import org.mrfyo.extractor.bean.OrderedFieldDescriptor;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.bean.MessageDescriptor;
 
@@ -28,16 +28,16 @@ public class OrderedMessageDescriptorBuilder extends MessageDescriptorBuilder {
         List<Field> fields = getDeclaredFields(messageType, true,
                 field -> field.isAnnotationPresent(OrderField.class));
 
-        List<BasicFieldDescriptor> fieldDescriptors = new ArrayList<>(fields.size());
+        List<OrderedFieldDescriptor> fieldDescriptors = new ArrayList<>(fields.size());
         for (Field field : fields) {
             PropertyDescriptor pd = getPropertyDescriptor(field.getName(), messageType);
-            fieldDescriptors.add(new BasicFieldDescriptor(field, pd));
+            fieldDescriptors.add(new OrderedFieldDescriptor(field, pd));
         }
         // sort by order.
-        fieldDescriptors.sort(Comparator.comparing(BasicFieldDescriptor::getOrder));
+        fieldDescriptors.sort(Comparator.comparing(OrderedFieldDescriptor::getOrder));
 
         // check field.
-        for (BasicFieldDescriptor fd : fieldDescriptors) {
+        for (OrderedFieldDescriptor fd : fieldDescriptors) {
             int size = fd.getSize();
             if (size < 0) {
                 throw new DescriptorBuilderException(fd.getName(), "fixed filed: size cannot less than 0");

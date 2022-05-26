@@ -12,7 +12,7 @@ import java.util.StringJoiner;
  * @author Feyon
  * @date 2021/5/30
  */
-public class BasicFieldDescriptor extends AbstractFieldDescriptor {
+public class OrderedFieldDescriptor extends AbstractFieldDescriptor {
 
     private final int order;
 
@@ -20,7 +20,7 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
 
     private final DataType dataType;
 
-    public BasicFieldDescriptor(Field field, PropertyDescriptor pd){
+    public OrderedFieldDescriptor(Field field, PropertyDescriptor pd){
         super(field, pd);
         OrderField orderField = getAnnotation(OrderField.class, "BasicField Required");
         this.order = orderField.order();
@@ -58,7 +58,7 @@ public class BasicFieldDescriptor extends AbstractFieldDescriptor {
         joiner.add("name=" + getName());
         joiner.add("type=" + getDataType());
         joiner.add("size=" + getSize());
-        return "BasicFieldDescriptor" + joiner;
+        return "OrderedFieldDescriptor" + joiner;
     }
 
 }
