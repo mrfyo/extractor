@@ -10,10 +10,19 @@ import org.mrfyo.extractor.io.Writer;
 public class WriterUtil {
 
     public static void writeInt(Writer w, int value, DataType dataType) {
+        if (dataType == null) {
+            throw new IllegalArgumentException("dataType cannot null");
+        }
+        if (DataType.BYTES.equals(dataType)) {
+            throw new IllegalArgumentException("unsupported dataType: " + dataType);
+        }
         writeInt(w, value, dataType.getSize());
     }
 
     public static void writeInt(Writer w, int value, int size) {
+        if (w == null) {
+            throw new IllegalArgumentException("writer cannot null");
+        }
         if (size == DataType.BYTE.getSize()) {
             w.writeUint8(value);
         } else if (size == DataType.WORD.getSize()) {
@@ -21,7 +30,7 @@ public class WriterUtil {
         } else if (size == DataType.DWORD.getSize()) {
             w.writeUint32(value);
         } else {
-            throw new ExtractException("cannot marshal " + size + " to byte");
+            throw new ExtractException("cannot write " + size + "byte");
         }
     }
 

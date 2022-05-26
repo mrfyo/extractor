@@ -3,7 +3,6 @@ package org.mrfyo.extractor.type;
 import cn.hutool.core.convert.Convert;
 import org.mrfyo.extractor.ExtractException;
 import org.mrfyo.extractor.bean.FieldDescriptor;
-import org.mrfyo.extractor.enums.DataType;
 import org.mrfyo.extractor.io.Reader;
 import org.mrfyo.extractor.io.Writer;
 import org.mrfyo.extractor.util.ReaderUtil;

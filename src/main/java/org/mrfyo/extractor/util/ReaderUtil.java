@@ -10,14 +10,29 @@ import org.mrfyo.extractor.io.Reader;
 public class ReaderUtil {
 
     public static int readInt(Reader reader, DataType dataType) {
+        if (dataType == null) {
+            throw new IllegalArgumentException("dataType cannot null");
+        }
+        if (DataType.BYTES.equals(dataType)) {
+            throw new IllegalArgumentException("unsupported dataType: " + dataType);
+        }
         return (int) readLong(reader, dataType.getSize());
     }
 
     public static long readLong(Reader reader, DataType dataType) {
+        if (dataType == null) {
+            throw new IllegalArgumentException("dataType cannot null");
+        }
+        if (DataType.BYTES.equals(dataType)) {
+            throw new IllegalArgumentException("unsupported dataType: " + dataType);
+        }
         return readLong(reader, dataType.getSize());
     }
 
     public static long readLong(Reader reader, int size) {
+        if (reader == null) {
+            throw new IllegalArgumentException("reader cannot null");
+        }
         if (size == DataType.BYTE.getSize()) {
             return reader.readUint8();
         } else if (size == DataType.WORD.getSize()) {
@@ -25,7 +40,7 @@ public class ReaderUtil {
         } else if (size == DataType.DWORD.getSize()) {
             return reader.readUint32();
         } else {
-            throw new ExtractException("cannot marshal " + size + " to byte");
+            throw new IllegalArgumentException("cannot marshal " + size + "byte");
         }
     }
 
