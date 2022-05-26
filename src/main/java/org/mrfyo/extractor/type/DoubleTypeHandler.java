@@ -1,6 +1,5 @@
 package org.mrfyo.extractor.type;
 
-import cn.hutool.core.convert.Convert;
 import org.mrfyo.extractor.ExtractException;
 import org.mrfyo.extractor.bean.FieldDescriptor;
 import org.mrfyo.extractor.annotation.Scale;
@@ -18,11 +17,11 @@ import java.math.RoundingMode;
 public class DoubleTypeHandler implements TypeHandler<Double> {
     @Override
     public void marshal(Writer writer, FieldDescriptor descriptor, Double value) throws ExtractException {
-        int v = inFormat(descriptor, value);
+        int v = writeScale(descriptor, value);
         WriterUtil.writeInt(writer, v, descriptor.getDataType());
     }
 
-    private int inFormat(FieldDescriptor descriptor, double v) {
+    private int writeScale(FieldDescriptor descriptor, double v) {
         Scale converter = descriptor.getAnnotation(Scale.class);
         if (converter != null) {
             double mul = converter.mul();
@@ -36,14 +35,11 @@ public class DoubleTypeHandler implements TypeHandler<Double> {
 
     @Override
     public Double unmarshal(Reader reader, FieldDescriptor descriptor) throws ExtractException {
-        return outFormat(descriptor, convert(reader, descriptor));
+        long v = ReaderUtil.readLong(reader, descriptor.getDataType());
+        return readScale(descriptor, v);
     }
 
-    private double convert(Reader reader, FieldDescriptor descriptor) {
-        return Convert.convert(Double.class, ReaderUtil.readLong(reader, descriptor.getDataType()));
-    }
-
-    private double outFormat(FieldDescriptor descriptor, double v) {
+    private double readScale(FieldDescriptor descriptor, double v) {
         Scale converter = descriptor.getAnnotation(Scale.class);
         if (converter != null) {
             double mul = converter.mul();
