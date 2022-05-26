@@ -48,11 +48,13 @@ public class CacheMessageDescriptorFactory implements MessageDescriptorFactory {
                                 descriptor = builder.build(messageType);
                                 if (descriptor != null) {
                                     cache.put(messageType, descriptor);
-                                } else {
-                                    unsupported = true;
-                                    unsupportedTypes.add(messageType);
+                                    break;
                                 }
                             }
+                        }
+                        if (descriptor == null) {
+                            unsupported = true;
+                            unsupportedTypes.add(messageType);
                         }
                     }
                 }
